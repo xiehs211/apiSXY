@@ -1,11 +1,14 @@
 verify_mime_type <- function(result) {
 
-    if (httr::http_type(result) != "application/json") {
-        paste(
-            "OpenAI API probably has been changed. If you see this, please",
-            "rise an issue at: https://github.com/irudnyts/openai/issues"
-        ) %>%
-            stop()
+    type <- httr::http_type(result)
+
+    if (!grepl("json", type, ignore.case = TRUE)) {
+        warning(sprintf(
+            "Response Content-Type '%s' is not JSON; attempting to parse payload anyway.",
+            type
+        ))
     }
+
+    invisible(TRUE)
 
 }

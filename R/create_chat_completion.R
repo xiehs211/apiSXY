@@ -257,7 +257,7 @@ parse_event_stream_payload <- function(raw_text) {
     }
 
     lines <- strsplit(raw_text, "\r?\n")[[1]]
-    data_lines <- sub("^data:\s*", "", lines[grepl("^data:", lines, ignore.case = TRUE)])
+    data_lines <- sub("^data:\\s*", "", lines[grepl("^data:", lines, ignore.case = TRUE)])
     data_lines <- data_lines[data_lines != "[DONE]"]
     data_lines <- data_lines[nzchar(data_lines)]
 
@@ -272,3 +272,7 @@ parse_event_stream_payload <- function(raw_text) {
         error = function(e) NULL
     )
 }
+
+
+
+

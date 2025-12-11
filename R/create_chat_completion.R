@@ -214,9 +214,26 @@ create_chat_completion<- function(
 
     verify_mime_type(response)
 
-    parsed <- response %>%
-        httr::content(as = "text", encoding = "UTF-8") %>%
-        jsonlite::fromJSON(flatten = TRUE)
+    response_text <- httr::content(response, as = "text", encoding = "UTF-8")
+
+    parsed <- tryCatch(
+        jsonlite::fromJSON(response_text, flatten = TRUE),
+        error = function(parse_err) {
+            fallback <- parse_event_stream_payload(response_text)
+            if (!is.null(fallback)) {
+                return(fallback)
+            }
+            stop(
+                paste0(
+                    "API返回内容解析失败: ",
+                    parse_err$message,
+                    "\n原始响应前500字符: ",
+                    substr(response_text, 1, 500)
+                ),
+                call. = FALSE
+            )
+        }
+    )
 
     #---------------------------------------------------------------------------
     # Check whether request failed and return parsed
@@ -232,4 +249,26 @@ create_chat_completion<- function(
 
     parsed
 
+}
+
+parse_event_stream_payload <- function(raw_text) {
+    if (!nzchar(raw_text)) {
+        return(NULL)
+    }
+
+    lines <- strsplit(raw_text, "\r?\n")[[1]]
+    data_lines <- sub("^data:\s*", "", lines[grepl("^data:", lines, ignore.case = TRUE)])
+    data_lines <- data_lines[data_lines != "[DONE]"]
+    data_lines <- data_lines[nzchar(data_lines)]
+
+    if (!length(data_lines)) {
+        return(NULL)
+    }
+
+    last_payload <- data_lines[length(data_lines)]
+
+    tryCatch(
+        jsonlite::fromJSON(last_payload, flatten = TRUE),
+        error = function(e) NULL
+    )
 }

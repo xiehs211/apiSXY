@@ -1,3 +1,7 @@
+# openai (development version)
+
+* Allow overriding the API host by setting `OPENAI_API_URL` (or the new helper automatically reads the variable), enabling use of third-party providers.
+
 # openai 0.4.1
 
 * Relax validation of `model` argument in functions `create_chat_completion()`, `create_fine_tune()`, `create_moderation()`, `create_embedding()`, `create_transcription()`, and `create_translation()`. Otherwise, each time OpenAI will roll out a new model, the list of models has to be updated

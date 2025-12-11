@@ -174,8 +174,7 @@ create_chat_completion<- function(
     # Build path parameters
 
     task <- "chat/completions"
-    mine_url = "http://sxygptcloud.com:3000"
-    base_url <- glue::glue(paste0(mine_url, "/v1/{task}"))
+    base_url <- build_openai_url(task)
     
     headers <- c(
         "Authorization" = paste("Bearer", openai_api_key),

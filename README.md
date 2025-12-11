@@ -1,7 +1,7 @@
 ``` r
 if (!require(remotes))
     install.packages("remotes")
-remotes::install_github("EddieLv/apiSXY")
+remotes::install_github("xiehs211/apiSXY")
 ```
 
 ## Authentication
@@ -20,7 +20,6 @@ you can use the following command (where
 with your actual key):
 
 ``` r
-#跟数信院客服领取独享key
 Sys.setenv(
     OPENAI_API_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     OPENAI_API_URL = 'https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/v1'

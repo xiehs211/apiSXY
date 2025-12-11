@@ -75,7 +75,7 @@ create_chat_completion<- function(
         openai_api_key = Sys.getenv("OPENAI_API_KEY"),
         openai_organization = NULL
 ) {
-    message("you are using openai - powered by SXY")
+    message("you are using openai - powered by yinyunapi")
     #---------------------------------------------------------------------------
     # Validate arguments
 
